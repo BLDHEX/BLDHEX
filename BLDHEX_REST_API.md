@@ -140,6 +140,7 @@ if (timestamp < (serverTime + 1000) && (serverTime - timestamp) <= recvWindow) {
 | API | 接口类型 | 签名 | 说明 |
 | --- | --- | --- | --- |
 | GET /openapi/v1/time | 公共接口 | X | 获取服务器时间 |
+| GET /openapi/v1/brokerInfo | 公共接口 | X | 获取当前broker交易规则和交易对的信息 |
 | GET /openapi/quote/v1/depth | 公共接口 | X | 获取订单簿 |
 | GET /openapi/quote/v1/trades | 公共接口 | X | 获取当前最新成交（最多500） |
 | GET /openapi/quote/v1/klines | 公共接口 | X | symbol的k线/烛线图数据 K线会根据开盘时间而辨别。 |
@@ -163,6 +164,57 @@ if (timestamp < (serverTime + 1000) && (serverTime - timestamp) <= recvWindow) {
 ```json
 {
   "serverTime": 1538323200000
+}
+```
+
+### 获取交易对信息
+#### GET /openapi/v1/brokerInfo
+#### 输入参数:无
+#### 返回示例:
+```json
+{
+  "timezone": "UTC",
+  "serverTime": 1538323200000,
+  "rateLimits": [{
+      "rateLimitType": "REQUESTS_WEIGHT",
+      "interval": "MINUTE",
+      "limit": 1500
+    },
+    {
+      "rateLimitType": "ORDERS",
+      "interval": "SECOND",
+      "limit": 20
+    },
+    {
+      "rateLimitType": "ORDERS",
+      "interval": "DAY",
+      "limit": 350000
+    }
+  ],
+  "brokerFilters":[],
+  "symbols": [{
+    "symbol": "ETHBTC",
+    "status": "TRADING",
+    "baseAsset": "ETH",
+    "baseAssetPrecision": "0.001",
+    "quoteAsset": "BTC",
+    "quotePrecision": "0.01",
+    "icebergAllowed": false,
+    "filters": [{
+      "filterType": "PRICE_FILTER",
+      "minPrice": "0.00000100",
+      "maxPrice": "100000.00000000",
+      "tickSize": "0.00000100"
+    }, {
+      "filterType": "LOT_SIZE",
+      "minQty": "0.00100000",
+      "maxQty": "100000.00000000",
+      "stepSize": "0.00100000"
+    }, {
+      "filterType": "MIN_NOTIONAL",
+      "minNotional": "0.00100000"
+    }]
+  }]
 }
 ```
 
